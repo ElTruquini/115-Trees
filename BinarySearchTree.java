@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class BinarySearchTree<E extends Comparable<E>> extends BinaryTree<E> {
 
-	int count = 0;
+
 	/**
 	 * Create an empty BinarySearchTree.
 	 */
@@ -57,7 +57,7 @@ public class BinarySearchTree<E extends Comparable<E>> extends BinaryTree<E> {
 			//System.out.println("RIGHT parent.item.compareTo(newItem) " + (parent.item.compareTo(newItem)));
 			parent.right = newNode;
 		}
-		count ++;
+
 	}
 	/**
 	*Looks for the item in the tree that is equivalent to the key.
@@ -94,7 +94,7 @@ public class BinarySearchTree<E extends Comparable<E>> extends BinaryTree<E> {
 	public void delete (E key){
 		TreeNode<E> current = root;
 		TreeNode<E> parent = root;
-		TreeNode<E> temp;
+		//TreeNode<E> temp;
 
 		if (root == null){ //if tree is empty
 			throw new RuntimeException ("Tree is empty");
@@ -103,109 +103,37 @@ public class BinarySearchTree<E extends Comparable<E>> extends BinaryTree<E> {
 				throw new RuntimeException ("Item is not on the list");
 			} else { //finds the key to delete
 				current = root;
-				while (current != null){
-					//System.out.println("PARENT: " + parent.item + " CURRENT: " + current.item + " KEY: " + key );
-					//System.out.println("parent.right: " + parent.right.item);
-					//System.out.println("parent.left: " + parent.left.item);
+				//=======Item to delete is root========
+				if (root.item.equals(key)){
+					//System.out.println("==Deleting root==");
+					deleteRoot(key);
+
+
+				}
+				while (current != null && !root.item.equals(key)){
 
 
 					//=======Item to delete is LEAF========
-					//System.out.println("LEAF xxxxxx PARENT: " + parent.item + " CURRENT: " + current.item + " KEY: " + key );
-					//System.out.println(current.item.equals(key));
 					if ((current.right == null && current.left == null)
 					&& (current.item.equals(key) ) ){ 
-						//System.out.println("=======Item to delete is LEAF========");
-						if (parent.right.item == key){
-							parent.right = null;
-						}else {
-							parent.left = null;
-						}
+						//System.out.println("==Deleting leaf==");
+						deleteLeaf(key);
 						break;
 					}
 
 					//=======Item to delete 1 child========
 					if ((current.right == null || current.left == null)
 					&& (current.item.equals(key))){ 
-						//System.out.println("=======Item to delete 1 child========");
-						if (key.compareTo(parent.item)<  0){ //parents left subtree
-							if (current.left != null){ //current has a child left
-								parent.left = current.left;
-							} else {
-								parent.left = current.right;
-							}
-						} else { //parents right subtree
-							if (current.left != null){ //current has a child left
-								parent.right = current.left;
-							
-							} else {
-								parent.right = current.right;
-							}
+						//System.out.println("==Deleting one child==");
+						deleteOneChild(key);
 						break;
-						}
 					}
 
 					//=======Item to delete TWO childs========
 					if ((current.right != null && current.left != null)
 					&& (current.item.equals(key))){ 
-						System.out.println("=======Item to delete TWO childs======== with key: " + key);
-						//System.out.println("Current is: " + current.item );
-						//System.out.println("Parent pre:" + parent.item);
-
-						current = current.right;
-						while (current.left != null ){ //finds the inorder successor
-							/*
-							if (current.item.compareTo(parent.item)>  0){
-								current = current.left;
-							}else {
-								current = current.right;
-							}
-							*/
-							current = current.left;
-						}
-						System.out.println("Inorder Succesor (Current): " + current.item);
-						
-
-						// creates new links for two child removal
-						if (key.compareTo(parent.item)>0){
-							temp = parent.right;
-
-							System.out.println("Went right");
-							System.out.println("Temp initial: " + temp.item + " Current: " + current.item);
-							parent.right = current;
-							current.left = temp.left;
-							if (temp.right != null){
-								temp = temp.right;
-							}
-							current.right = temp.right;
-
-						} else{
-							temp = parent.left;
-
-							System.out.println("Went left");
-							System.out.println("Temp initial: " + temp.item + " Current: " + current.item);
-
-							parent.left = current;
-							current.left = temp.left;
-							if (temp.right != null){
-								temp = temp.right;
-								if (temp != null){
-									current.right = temp.right;
-
-								}
-
-							}
-					
-
-
-						}
-
-						////////////gabriela is working.
-		
-
-						System.out.println("Temp final: " + temp.item);
-						//System.out.println("Temp right right " + temp.right.right.item);
-
-
+						//System.out.println("==Deleting two childs==");
+						deleteTwoChild(key);
 						break;
 					}
 
@@ -217,55 +145,222 @@ public class BinarySearchTree<E extends Comparable<E>> extends BinaryTree<E> {
 						current = parent.right;
 					}
 
-
-
 				}
 			}
 		}
 
 	}
-// me quede tratando de arreglar la doble eliminacion en una leaf
+	private void deleteRoot (E key){
+		TreeNode<E> current = root;
+		TreeNode<E> temp = root;
+
+		current = current.right;
+			//System.out.println("=======Item to delete root========");
+
+		while (current.left != null ){ 
+			current = current.left;
+		}
+		//System.out.println("Current: " + current.item);
+		root = current;
+		root.left = temp.left;
+		root.right = temp.right;
+
+		//eliminate copied node
+		temp = current;
+		temp = temp.right;
+			if (temp == current){ // first move to the right
+				current.right = null;
+			}
+			//finds the link that is looping to the copied curr and deletes
+			while (temp.left != current && temp.left != null){
+				temp = temp.left;
+			}
+			temp.left = null;
+
+	}
 
 
+	private void deleteTwoChild(E key){
+		TreeNode<E> current = root;
+		TreeNode<E> parent = root;
+		TreeNode<E> temp;
+
+		current = root;
+		while (current != null){
 
 
- 	/******* COMPLETE MISSING METHODS HERE *******/
+			if ((current.right != null && current.left != null)
+			&& (current.item.equals(key))){ 
+				//System.out.println("=======Item to delete TWO childs======== with key: " + key);
+				//System.out.println("Current is: " + current.item );
+				//System.out.println("Parent pre:" + parent.item);
+
+
+				//finds the inorder successor
+				current = current.right;
+				while (current.left != null ){ 
+					current = current.left;
+				}
+				//System.out.println("Inorder Succesor (Current): " + current.item);
+				
+
+				// creates new links for two child removal
+				if (key.compareTo(parent.item)>0){
+					temp = parent.right;
+					//System.out.println("Went right");
+					//System.out.println("Temp initial: " + temp.item + " Current: " + current.item);
+					//System.out.println("Parent: " + parent.item);
+					parent.right = current;
+					current.left = temp.left;
+					//System.out.println("Temp PRE: " + temp.item + " Current: " + current.item);
+					current.right = temp.right;
+					temp = current;
+					temp = temp.right;
+					if (temp == current){ // first move to the right
+						current.right = null;
+					}
+					//finds the link that is looping to the copied curr and deletes
+					while (temp.left != current && temp.left != null){
+						temp = temp.left;
+					}
+					temp.left = null;
+					//System.out.println("Temp post: " + temp.item + " Current: " + current.item);
+
+				} else{
+					temp = parent.left;
+					//System.out.println("Went left");
+					//System.out.println("Temp initial: " + temp.item + " Current: " + current.item);
+					parent.left = current;
+					current.left = temp.left;
+					//System.out.println("Parent: " + parent.item + " current: " + current.item + " temp: " + temp.item);
+					current.right = temp.right;
+					temp = current;
+					temp = temp.right;
+					if (temp == current){
+						current.right = null;
+					}
+					while (temp.left != current && temp.left !=null){
+						temp = temp.left;
+					}
+					temp.left = null;
+					//System.out.println("Temp post: " + temp.item + " Current: " + current.item);
+				}
+
+				//System.out.println("Temp final: " + temp.item);
+				//System.out.println("Temp right right " + temp.right.right.item);
+				break;
+			}
+
+			//traversing until item is found
+			parent = current;
+			if (key.compareTo(parent.item)<  0){
+				current = parent.left;
+			}else {
+				current = parent.right;
+			}
+		}
+
+	}
+
+	private void deleteOneChild (E key){
+		TreeNode<E> current = root;
+		TreeNode<E> parent = root;
+		TreeNode<E> temp;
+
+		current = root;
+		while (current != null){
+
+			if ((current.right == null || current.left == null)
+			&& (current.item.equals(key))){ 
+				if (key.compareTo(parent.item)<  0){ //parents left subtree
+					if (current.left != null){ //current has a child left
+						parent.left = current.left;
+					} else {
+						parent.left = current.right;
+					}
+				} else { //parents right subtree
+					if (current.left != null){ //current has a child left
+						parent.right = current.left;
+					
+					} else {
+						parent.right = current.right;
+					}
+				break;
+				}
+			}
+
+
+			//traversing until item is found
+			parent = current;
+			if (key.compareTo(parent.item)<  0){
+				current = parent.left;
+			}else {
+				current = parent.right;
+			}
+		}
+	}
+
+	private void deleteLeaf (E key ){
+		TreeNode<E> current = root;
+		TreeNode<E> parent = root;
+		//TreeNode<E> temp;
+
+		current = root;
+		while (current != null){
+
+			if ((current.right == null && current.left == null)
+			&& (current.item.equals(key) ) ){ 
+				if (parent.right.item == key){
+					parent.right = null;
+				}else {
+					parent.left = null;
+				}
+				break;
+			}
+
+			//traversing until item is found
+			parent = current;
+			if (key.compareTo(parent.item)<  0){
+				current = parent.left;
+			}else {
+				current = parent.right;
+			}
+		
+		}
+
+	}
 
 
 	/*
 	 * Places all the items in the tree into a sorted list.
 	 * @return the sorted list.
-	 
+	*/
 	public ArrayList<E> inOrder() {
 		ArrayList<E> list = new ArrayList<E>();
 		collectInOrder(list,root);
 		return list;
-	}*/
+	}
 
 /*
- * NOTE TO STUDENT.
  * This recursive method is the one that does the work
  * of traversing the tree in order and placing items
  * into the list.
- * /
+ */
 	private void collectInOrder(ArrayList<E> list, TreeNode<E> node) {
- 		/******* COMPLETE *******/
-	//}
+ 		if (node != null){
+ 			collectInOrder(list, node.left);
+ 			list.add(node.item);
+ 			collectInOrder(list, node.right);
+ 		}
+	}
 
 	/**
 	 * Internal test harness.
 	 * @param args Not used.
 	 */
 	public static void main(String[] args) {
-/*
- * NOTE TO STUDENT:
- * Something to get you started...
- * Uncomment as you go, then continue testing.
- */
-
-
-		BinarySearchTree<PatientLocation> tree = new BinarySearchTree<PatientLocation>();
-		
+		/*
+		BinarySearchTree<PatientLocation> tree = new BinarySearchTree<PatientLocation>();	
 		PatientLocation p00 = new PatientLocation("Andrea", "Andrea", 338);
 		PatientLocation p01 = new PatientLocation("Bob", "Bob",116);
 		PatientLocation p02 = new PatientLocation("Carlos", "Carlos",422);
@@ -295,29 +390,32 @@ public class BinarySearchTree<E extends Comparable<E>> extends BinaryTree<E> {
 		tree.insert(p091);
 		tree.insert(p10);
 
-		//tree.delete(p00);
-		//tree.delete(p01);
+		//tree.delete(p00); //andrea
+		//tree.delete(p01);//bob
 		//tree.delete(p02); // carlos
 		//tree.delete(p03); // dionisio
 		//tree.delete(p04);
 		//tree.delete(p05); //root francisco
-		tree.delete(p06); //gabriela
+		//tree.delete(p06); //gabriela
+		//tree.delete(p061);//GAA
+		//tree.delete(p07); // hector
 		//tree.delete(p08); // ivan
 		//tree.delete(p09); //juan
+		//System.out.println(tree.retrieve (p01));
 
 		DrawableBTree<PatientLocation> dbt = new DrawableBTree<PatientLocation>(tree);
 		dbt.showFrame();
 
-		/*
-		PatientLocation p4 = new PatientLocation("Newman","Alfred",607);
-		tree.insert(p4);
-		tree.insert(p3);
-		tree.insert(p2);
+		
+		//PatientLocation p4 = new PatientLocation("Newman","Alfred",607);
+		//tree.insert(p4);
+		//tree.insert(p3);
+		//tree.insert(p2);
 		ArrayList<PatientLocation> list  = tree.inOrder();
 		System.out.println(list);
 		// draw the tree in its current state:
-
 */
+
 	}
 
 }

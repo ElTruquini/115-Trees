@@ -45,23 +45,20 @@ public class BinaryTree<E> {
 	 * The height of an empty tree is therefore equal to 0.
 	 */
 	public int height (){
-		return 9; //genHeight(root);
-		/*
+		if (root != null){
+
+		}
+		return 0; //genHeight(root);
+	}
 	private int genheight (TreeNode node){
 		//base case
 		if ( node == null){
 			return 0;
 		}
 		//recursive stuff
-		return 1+genheight(max(node.left, node right));
+		return 1+genheight(Math.max(node.left, node.right));
 	}
 
-
-
-		*/
-
-
-	}
 	/**
 	 * @return True if the tree is empty..
 	 */
@@ -82,43 +79,12 @@ public class BinaryTree<E> {
  	public void setRootItem (E newItem){
 
  	}
-/*
- 	public static void attach (String newish, BinaryTree<String> parent){
- 		TreeNode newItem = new TreeNode (newish);
- 		//ystem.out.println(parent.toString());
- 	
- 		if (parent.getRoot().left == null){
- 			parent.getRoot().left = newItem;
- 		}else {
- 				parent.getRoot().right = newItem;
- 		}
- 		
 
- 		if (parent.getRoot().left == null && parent.getRoot().right == null){
- 			throw new RuntimeException ("The node has two children already.");
- 		} 
-		
- 	}
- 	
- 	public void attachLeft (E newItem){
- 	}
-
- 	public void attachRight (E newItem){
- 	}
-
- 	public void attachLeftSubtree (BinaryTree<E> leftSubtree) throws RuntimeException {
- 	}
-
- 	public void detachRightSubtree (BinaryTree<E> rightSubtree) throws RuntimeException {
- 	}
-
- 	public void detachLeftSubtree (BinaryTree<E> leftSubtree) throws RuntimeException {
- 	}
  	
 
  	//Internal tester
  	public static void main(String[] args) {
-
+/*
  		BinaryTree<String> a = new BinaryTree<String> ("Comp Sci");
  		//TreeNode<String> b = new TreeNode<String> ("110");
  		//BinaryTree<String> c = new BinaryTree<String> ("115");
@@ -127,8 +93,9 @@ public class BinaryTree<E> {
  		attach("222",)
  		DrawableBTree<String> picture = new DrawableBTree<String>(a);
 		picture.showFrame();
+ */
  	}
- 	*/
+ 	
 }
 
 	
