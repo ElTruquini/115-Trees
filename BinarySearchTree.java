@@ -94,6 +94,7 @@ public class BinarySearchTree<E extends Comparable<E>> extends BinaryTree<E> {
 	public void delete (E key){
 		TreeNode<E> current = root;
 		TreeNode<E> parent = root;
+		TreeNode<E> temp;
 
 		if (root == null){ //if tree is empty
 			throw new RuntimeException ("Tree is empty");
@@ -103,47 +104,121 @@ public class BinarySearchTree<E extends Comparable<E>> extends BinaryTree<E> {
 			} else { //finds the key to delete
 				current = root;
 				while (current != null){
-					parent = current;
 					//System.out.println("PARENT: " + parent.item + " CURRENT: " + current.item + " KEY: " + key );
 					//System.out.println("parent.right: " + parent.right.item);
 					//System.out.println("parent.left: " + parent.left.item);
 
+
+					//=======Item to delete is LEAF========
+					//System.out.println("LEAF xxxxxx PARENT: " + parent.item + " CURRENT: " + current.item + " KEY: " + key );
+					//System.out.println(current.item.equals(key));
+					if ((current.right == null && current.left == null)
+					&& (current.item.equals(key) ) ){ 
+						//System.out.println("=======Item to delete is LEAF========");
+						if (parent.right.item == key){
+							parent.right = null;
+						}else {
+							parent.left = null;
+						}
+						break;
+					}
+
+					//=======Item to delete 1 child========
+					if ((current.right == null || current.left == null)
+					&& (current.item.equals(key))){ 
+						//System.out.println("=======Item to delete 1 child========");
+						if (key.compareTo(parent.item)<  0){ //parents left subtree
+							if (current.left != null){ //current has a child left
+								parent.left = current.left;
+							} else {
+								parent.left = current.right;
+							}
+						} else { //parents right subtree
+							if (current.left != null){ //current has a child left
+								parent.right = current.left;
+							
+							} else {
+								parent.right = current.right;
+							}
+						break;
+						}
+					}
+
+					//=======Item to delete TWO childs========
+					if ((current.right != null && current.left != null)
+					&& (current.item.equals(key))){ 
+						System.out.println("=======Item to delete TWO childs======== with key: " + key);
+						//System.out.println("Current is: " + current.item );
+						//System.out.println("Parent pre:" + parent.item);
+
+						current = current.right;
+						while (current.left != null ){ //finds the inorder successor
+							/*
+							if (current.item.compareTo(parent.item)>  0){
+								current = current.left;
+							}else {
+								current = current.right;
+							}
+							*/
+							current = current.left;
+						}
+						System.out.println("Inorder Succesor (Current): " + current.item);
+						
+
+						// creates new links for two child removal
+						if (key.compareTo(parent.item)>0){
+							temp = parent.right;
+
+							System.out.println("Went right");
+							System.out.println("Temp initial: " + temp.item + " Current: " + current.item);
+							parent.right = current;
+							current.left = temp.left;
+							if (temp.right != null){
+								temp = temp.right;
+							}
+							current.right = temp.right;
+
+						} else{
+							temp = parent.left;
+
+							System.out.println("Went left");
+							System.out.println("Temp initial: " + temp.item + " Current: " + current.item);
+
+							parent.left = current;
+							current.left = temp.left;
+							if (temp.right != null){
+								temp = temp.right;
+								if (temp != null){
+									current.right = temp.right;
+
+								}
+
+							}
+					
+
+
+						}
+
+						////////////gabriela is working.
+		
+
+						System.out.println("Temp final: " + temp.item);
+						//System.out.println("Temp right right " + temp.right.right.item);
+
+
+						break;
+					}
+
 					//traversing until item is found
+					parent = current;
 					if (key.compareTo(parent.item)<  0){
 						current = parent.left;
 					}else {
 						current = parent.right;
 					}
 
-					//item to delete is a leaf
-					if ((current.right == null && current.left == null)
-					&& (current.item.equals(key) || current.item.equals(key)) ){ 
-						System.out.println("=======Item to delete is LEAF========");
-						System.out.println("Current is: " + current.item );
-						System.out.println("Parent is:" + parent.item);
-						System.out.println("Key is:" + key);
-						if (parent.right.item == key){
-							parent.right = null;
-						}else {
-							parent.left = null;
-						}
-					break;
-					}
 
-					//item to delete has one child
-					if ((current.right == null || current.left == null)
-					&& (current.item.equals(key) || current.item.equals(key)) ){ 
-						System.out.println("=======Item to delete 1 child========");
-						System.out.println("Current is: " + current.item );
-						System.out.println("Parent is:" + parent.item);
-						System.out.println("Key is:" + key);
-						if (current.left != null){
-							parent.left = current.left;
-						} else {
-							parent.right = current.right;
-						}
-					break;
-					}
+
 				}
 			}
 		}
@@ -191,31 +266,44 @@ public class BinarySearchTree<E extends Comparable<E>> extends BinaryTree<E> {
 
 		BinarySearchTree<PatientLocation> tree = new BinarySearchTree<PatientLocation>();
 		
-		PatientLocation p00 = new PatientLocation("Janet", "Janet", 338);
+		PatientLocation p00 = new PatientLocation("Andrea", "Andrea", 338);
 		PatientLocation p01 = new PatientLocation("Bob", "Bob",116);
-		PatientLocation p02 = new PatientLocation("Alan", "Alan",422);
-		PatientLocation p03 = new PatientLocation("Ellen", "Ellen",454);
-		PatientLocation p04 = new PatientLocation("Tom", "Tom",121);
-		PatientLocation p05 = new PatientLocation("Karen", "Karen",121);
-		PatientLocation p06 = new PatientLocation("Wendy", "wendy",121);
-
-
+		PatientLocation p02 = new PatientLocation("Carlos", "Carlos",422);
+		PatientLocation p03 = new PatientLocation("Donisio", "Donisio",454);
+		PatientLocation p031 = new PatientLocation("Daniel", "Daniel",454);
+		PatientLocation p04 = new PatientLocation("Ellen", "Ellen",121);
+		PatientLocation p05 = new PatientLocation("Francisco", "Francisco",121);
+		PatientLocation p06 = new PatientLocation("Gabriela", "Gabriela",121);
+		PatientLocation p061 = new PatientLocation("GAA", "GAA",121);
+		PatientLocation p07 = new PatientLocation("Hector", "Hector",121);
+		PatientLocation p08 = new PatientLocation("Ivan", "Ivan",121);
+		PatientLocation p09 = new PatientLocation("Juan", "Juan",121);
+		PatientLocation p091 = new PatientLocation("JA", "JA",121);
+		PatientLocation p10 = new PatientLocation("KJ", "KJ",121);
+		tree.insert(p05);	
+		tree.insert(p02);
+		tree.insert(p08);
 		tree.insert(p00);
 		tree.insert(p01);
-		tree.insert(p02);
 		tree.insert(p03);
+		tree.insert(p031);
 		tree.insert(p04);
-		//tree.insert(p05);
 		tree.insert(p06);
-		
+		tree.insert(p061);
+		tree.insert(p07);
+		tree.insert(p09);
+		tree.insert(p091);
+		tree.insert(p10);
 
 		//tree.delete(p00);
 		//tree.delete(p01);
-		//tree.delete(p02);
-		//tree.delete(p03);
-		tree.delete(p04);
-		//tree.delete(p05);
-		tree.delete(p06);
+		//tree.delete(p02); // carlos
+		//tree.delete(p03); // dionisio
+		//tree.delete(p04);
+		//tree.delete(p05); //root francisco
+		tree.delete(p06); //gabriela
+		//tree.delete(p08); // ivan
+		//tree.delete(p09); //juan
 
 		DrawableBTree<PatientLocation> dbt = new DrawableBTree<PatientLocation>(tree);
 		dbt.showFrame();

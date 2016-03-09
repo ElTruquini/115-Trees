@@ -45,11 +45,21 @@ public class BinaryTree<E> {
 	 * The height of an empty tree is therefore equal to 0.
 	 */
 	public int height (){
-		if (root == null){
+		return 9; //genHeight(root);
+		/*
+	private int genheight (TreeNode node){
+		//base case
+		if ( node == null){
 			return 0;
-		} else {
-			return 9; // *********COMPLETE
 		}
+		//recursive stuff
+		return 1+genheight(max(node.left, node right));
+	}
+
+
+
+		*/
+
 
 	}
 	/**
