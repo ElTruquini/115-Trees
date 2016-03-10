@@ -23,16 +23,12 @@ public class BinarySearchTree<E extends Comparable<E>> extends BinaryTree<E> {
 	* @item: The newest item
 	*/
 	public void insert (E newItem){
-		//System.out.println(this.root);
 		TreeNode<E> newNode = new TreeNode<E> (newItem);
 		TreeNode<E> current = root;
 		TreeNode<E> parent = null;
 
 		while (current != null){
 			parent = current;
-			//System.out.println();
-			//System.out.println("New item is: " + newItem.toString());
-			//System.out.println("Current is: " + current.item);
 			if (newItem.compareTo(current.item) < 0 ){
 				current = current.left;
 			} else {
@@ -43,18 +39,8 @@ public class BinarySearchTree<E extends Comparable<E>> extends BinaryTree<E> {
 			root = newNode;
 		}
 		else if (newItem.compareTo(parent.item) < 0) {
-			//System.out.println("LEFT Current Item: " +  current.item + "current.item.compareTo(newItem)" + (current.item.compareTo(newItem) < 0 ) );
-			//System.out.println("LEFT Newnode " + newNode.item);
-			//System.out.println("LEFT parent " + parent.item);
-			//System.out.println("current" + current.item);
-			//System.out.println("LEFT parent.item.compareTo(newItem) " + (parent.item.compareTo(newItem)));	
 			parent.left = newNode;
 		} else {
-			//System.out.println("LEFT Current Item: " +  current.item + "current.item.compareTo(newItem)" + (current.item.compareTo(newItem) < 0 ) );
-			//System.out.println("RIGHT Newnode" + newNode.item);
-			//System.out.println("RIGHT parent" + parent.item);
-			//System.out.println("current" + current.item);
-			//System.out.println("RIGHT parent.item.compareTo(newItem) " + (parent.item.compareTo(newItem)));
 			parent.right = newNode;
 		}
 
@@ -67,20 +53,15 @@ public class BinarySearchTree<E extends Comparable<E>> extends BinaryTree<E> {
 	public E retrieve (E key){
 		TreeNode<E> current = root;
 		TreeNode<E> parent = root;
-		//System.out.println("\n====RETRIEVE TARGET====== " + key );
 		if (root != null){
 			while (current != null){
 				parent = current;
-				//System.out.println("Curr: " + current.item + " Curr = Key?: " + current.item.equals(key));
 				if (current.item.equals(key)){
-					//System.out.println("I FOUND IT! " + current.right + "   " + current.left);
 					return current.item;
 				}
 				else if (key.compareTo(parent.item)<  0){
-					//System.out.println("LEFT, parent: " + parent.item + " current: " + current.item);
 					current = parent.left;
 				}else {
-					//System.out.println("RIGHT, parent: " + parent.item + " current: " + current.item);
 					current = parent.right;
 				}
 			}
@@ -105,7 +86,6 @@ public class BinarySearchTree<E extends Comparable<E>> extends BinaryTree<E> {
 				current = root;
 				//=======Item to delete is root========
 				if (root.item.equals(key)){
-					//System.out.println("==Deleting root==");
 					deleteRoot(key);
 
 
@@ -155,16 +135,12 @@ public class BinarySearchTree<E extends Comparable<E>> extends BinaryTree<E> {
 		TreeNode<E> temp = root;
 
 		current = current.right;
-			//System.out.println("=======Item to delete root========");
-
 		while (current.left != null ){ 
 			current = current.left;
 		}
-		//System.out.println("Current: " + current.item);
 		root = current;
 		root.left = temp.left;
 		root.right = temp.right;
-
 		//eliminate copied node
 		temp = current;
 		temp = temp.right;
@@ -191,9 +167,6 @@ public class BinarySearchTree<E extends Comparable<E>> extends BinaryTree<E> {
 
 			if ((current.right != null && current.left != null)
 			&& (current.item.equals(key))){ 
-				//System.out.println("=======Item to delete TWO childs======== with key: " + key);
-				//System.out.println("Current is: " + current.item );
-				//System.out.println("Parent pre:" + parent.item);
 
 
 				//finds the inorder successor
@@ -201,18 +174,13 @@ public class BinarySearchTree<E extends Comparable<E>> extends BinaryTree<E> {
 				while (current.left != null ){ 
 					current = current.left;
 				}
-				//System.out.println("Inorder Succesor (Current): " + current.item);
 				
 
 				// creates new links for two child removal
 				if (key.compareTo(parent.item)>0){
 					temp = parent.right;
-					//System.out.println("Went right");
-					//System.out.println("Temp initial: " + temp.item + " Current: " + current.item);
-					//System.out.println("Parent: " + parent.item);
 					parent.right = current;
 					current.left = temp.left;
-					//System.out.println("Temp PRE: " + temp.item + " Current: " + current.item);
 					current.right = temp.right;
 					temp = current;
 					temp = temp.right;
@@ -224,15 +192,11 @@ public class BinarySearchTree<E extends Comparable<E>> extends BinaryTree<E> {
 						temp = temp.left;
 					}
 					temp.left = null;
-					//System.out.println("Temp post: " + temp.item + " Current: " + current.item);
 
 				} else{
 					temp = parent.left;
-					//System.out.println("Went left");
-					//System.out.println("Temp initial: " + temp.item + " Current: " + current.item);
 					parent.left = current;
 					current.left = temp.left;
-					//System.out.println("Parent: " + parent.item + " current: " + current.item + " temp: " + temp.item);
 					current.right = temp.right;
 					temp = current;
 					temp = temp.right;
@@ -243,11 +207,8 @@ public class BinarySearchTree<E extends Comparable<E>> extends BinaryTree<E> {
 						temp = temp.left;
 					}
 					temp.left = null;
-					//System.out.println("Temp post: " + temp.item + " Current: " + current.item);
 				}
 
-				//System.out.println("Temp final: " + temp.item);
-				//System.out.println("Temp right right " + temp.right.right.item);
 				break;
 			}
 
