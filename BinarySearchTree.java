@@ -359,7 +359,9 @@ public class BinarySearchTree<E extends Comparable<E>> extends BinaryTree<E> {
 	 * @param args Not used.
 	 */
 	public static void main(String[] args) {
-		/*
+
+		
+		
 		BinarySearchTree<PatientLocation> tree = new BinarySearchTree<PatientLocation>();	
 		PatientLocation p00 = new PatientLocation("Andrea", "Andrea", 338);
 		PatientLocation p01 = new PatientLocation("Bob", "Bob",116);
@@ -390,6 +392,8 @@ public class BinarySearchTree<E extends Comparable<E>> extends BinaryTree<E> {
 		tree.insert(p091);
 		tree.insert(p10);
 
+		System.out.println(		tree.height());
+/*
 		//tree.delete(p00); //andrea
 		//tree.delete(p01);//bob
 		//tree.delete(p02); // carlos
@@ -402,10 +406,10 @@ public class BinarySearchTree<E extends Comparable<E>> extends BinaryTree<E> {
 		//tree.delete(p08); // ivan
 		//tree.delete(p09); //juan
 		//System.out.println(tree.retrieve (p01));
-
+*/
 		DrawableBTree<PatientLocation> dbt = new DrawableBTree<PatientLocation>(tree);
 		dbt.showFrame();
-
+/*
 		
 		//PatientLocation p4 = new PatientLocation("Newman","Alfred",607);
 		//tree.insert(p4);
